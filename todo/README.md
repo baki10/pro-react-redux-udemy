@@ -1,3 +1,10 @@
+Как создать React приложение?
+ - npm i -g create-react-app
+ - create-react-app todo
+ - cd todo
+ - npm start
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
