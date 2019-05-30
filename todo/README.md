@@ -11,3 +11,12 @@ Todo Application
 - функцции, которые возвращают React Element
 - Должны начинаться с большой буквы
 - Имя можно использовать в JSX как обычный тег: <AppHeader />
+
+3) Spread operator (take all props from object)
+<li><TodoListItem {...item} /></li> 
+the same as:
+<li><TodoListItem label={item.label} prop2={item.prop2} /></li>
+
+const { id, ...otherProps } = item;
+extract prop 'id' from item, then put all other props to 'otherPros' object
+
