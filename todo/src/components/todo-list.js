@@ -2,12 +2,18 @@ import React from "react";
 
 import TodoListItem from './todo-list-item'
 
-const TodoList = () => {
+const TodoList = ({ todos }) => {
+
+    const elements = todos.map((item) => {
+        const { id, ...otherProps } = item;
+        return (
+            <li key={id}><TodoListItem {...otherProps} /></li>
+        );
+    });
+
     return (
         <ul>
-            <li><TodoListItem label='Learn ES6' /></li>
-            <li><TodoListItem label='Learn React' important /></li>
-            <li><TodoListItem label='Build web app' /></li>
+            {elements}
         </ul>
     );
 };
