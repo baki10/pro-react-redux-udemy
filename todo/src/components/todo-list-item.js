@@ -1,7 +1,7 @@
 import React from "react";
 
-const TodoListItem = () => {
-    return <span>Learn ES6</span>;
+const TodoListItem = (props) => {
+    return <span>{props.label}</span>;
 };
 
 export default TodoListItem;
