@@ -20,3 +20,22 @@ the same as:
 const { id, ...otherProps } = item;
 extract prop 'id' from item, then put all other props to 'otherPros' object
 
+4) binding this to component:
+    a) inside constructor using bind
+constructor(){
+    super();
+    this.onClick = this.onClick.bind(this);
+}
+onClick() {
+    console.log('clicked');
+}
+    b) inside constructor using arrow function 
+constructor(){
+    super();
+    this.onClick = () => {console.log('clicked')};
+}
+    c) outside constructor in component using arrow function
+onClick = () => {console.log('clicked')};
+
+
+
