@@ -20,6 +20,7 @@ export default class App extends React.Component {
     onDeleteTodoListItem = (id) => {
         this.setState(({ todoData }) => {
             const idx = todoData.findIndex((el) => el.id === id);
+            // нельзя изменять state на-прямую
             const newTodoData = [
                 ...todoData.slice(0, idx),
                 ...todoData.slice(idx + 1)
