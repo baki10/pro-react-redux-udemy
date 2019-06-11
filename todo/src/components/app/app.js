@@ -18,7 +18,7 @@ export default class App extends React.Component {
             this.createTodoItem('Make Awesome App'),
             this.createTodoItem('Have a lunch')
         ],
-        selectedTab: 'All', // All, Active or Done
+        selectedTab: 'all', // all, active or done
         filterText: ''
     }
 
@@ -88,17 +88,17 @@ export default class App extends React.Component {
     }
 
     filterByTab = (todoData, tab) => {
-        if (tab === 'Active') {
+        if (tab === 'active') {
             return todoData.filter((todo) => !todo.done);
         }
-        if (tab === 'Done') {
+        if (tab === 'done') {
             return todoData.filter((todo) => todo.done);
         }
         // All
         return todoData;
     }
 
-    filterByText = (todoData, text) => {
+    search = (todoData, text) => {
         if (text.length < 3) {
             return todoData;
         }
@@ -110,21 +110,20 @@ export default class App extends React.Component {
     render() {
         const { todoData, filterText, selectedTab } = this.state;
 
-        let filteredTodoData = this.filterByTab(todoData, selectedTab);
-        filteredTodoData = this.filterByText(filteredTodoData, filterText)
+        let todos = this.search(this.filterByTab(todoData, selectedTab), filterText)
 
-        const doneCount = filteredTodoData.filter(({ done }) => done).length;
-        const todoCount = filteredTodoData.length - doneCount;
+        const doneCount = todos.filter(({ done }) => done).length;
+        const todoCount = todos.length - doneCount;
         return (
             <div className="todo-app">
                 <AppHeader todo={todoCount} done={doneCount} />
                 <div className="top-panel d-flex">
                     <SearchPanel onFilterInputChange={this.onFilterInputChange} />
-                    <ItemStatusFilter onTabSelected={this.onTabSelected} />
+                    <ItemStatusFilter onTabSelected={this.onTabSelected} activeTab={selectedTab} />
                 </div>
 
                 <TodoList
-                    todos={filteredTodoData}
+                    todos={todos}
                     onDeleted={this.deleteItem}
                     onToggleDone={this.toggleDone}
                     onToggleImportant={this.toggleImportant}
