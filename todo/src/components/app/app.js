@@ -18,7 +18,7 @@ export default class App extends React.Component {
             this.createTodoItem('Make Awesome App'),
             this.createTodoItem('Have a lunch')
         ],
-        selectedTab: 0,
+        selectedTab: 'All', // All, Active or Done
         filterText: ''
     }
 
@@ -79,8 +79,8 @@ export default class App extends React.Component {
         });
     }
 
-    onTabSelected = (tab) => {
-        this.setState({ selectedTab: tab });
+    onTabSelected = (selectedTab) => {
+        this.setState({ selectedTab });
     }
 
     onFilterInputChange = (filterText) => {
@@ -88,14 +88,14 @@ export default class App extends React.Component {
     }
 
     filterByTab = (todoData, tab) => {
-        if (tab === 0) {    // All
-            return todoData;
-        }
-        if (tab === 1) {    // Active
+        if (tab === 'Active') {
             return todoData.filter((todo) => !todo.done);
         }
-        // Done 
-        return todoData.filter((todo) => todo.done);
+        if (tab === 'Done') {
+            return todoData.filter((todo) => todo.done);
+        }
+        // All
+        return todoData;
     }
 
     filterByText = (todoData, text) => {
