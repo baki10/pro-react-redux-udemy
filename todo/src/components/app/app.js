@@ -102,12 +102,14 @@ export default class App extends React.Component {
         if (text.length < 3) {
             return todoData;
         }
-        return todoData.filter((todo) => todo.label.includes(text));
+        return todoData.filter((todo) => {
+            return todo.label.toUpperCase().includes(text.toUpperCase());
+        });
     }
 
     render() {
         const { todoData, filterText, selectedTab } = this.state;
-        
+
         let filteredTodoData = this.filterByTab(todoData, selectedTab);
         filteredTodoData = this.filterByText(filteredTodoData, filterText)
 
