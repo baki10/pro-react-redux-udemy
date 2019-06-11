@@ -17,7 +17,9 @@ export default class App extends React.Component {
             this.createTodoItem('Drink Coffee'),
             this.createTodoItem('Make Awesome App'),
             this.createTodoItem('Have a lunch')
-        ]
+        ],
+        selectedTab: 0,
+        filterText: ''
     }
 
     createTodoItem(label) {
@@ -77,21 +79,55 @@ export default class App extends React.Component {
         });
     }
 
-    render() {
+    onTabSelected = (tab) => {
+        this.setState({ selectedTab: tab });
+    }
 
+    onFilterInputChange = (e) => {
+        this.setState({ filterText: e.target.value });
+    }
+
+    filterByTab = (todoData) => {
+        const tab = this.state.selectedTab;
+        if (tab === 0) {    // All
+            return todoData;
+        }
+        if (tab === 1) {    // Active
+            return todoData.filter((todo) => !todo.done);
+        }
+        // Done 
+        return todoData.filter((todo) => todo.done);
+    }
+
+    filterByText = (todoData) => {
+        const text = this.state.filterText;
+        if (text.length < 3) {
+            return todoData;
+        }
+        return todoData.filter((todo) => todo.label.includes(text));
+    }
+
+    filterTodoData = () => {
         const { todoData } = this.state;
-        const doneCount = todoData.filter(({ done }) => done).length;
-        const todoCount = todoData.length - doneCount;
+        let filteredTodoData = this.filterByTab([...todoData]);
+        filteredTodoData = this.filterByText(filteredTodoData);
+        return filteredTodoData;
+    }
+
+    render() {
+        const filteredTodoData = this.filterTodoData();
+        const doneCount = filteredTodoData.filter(({ done }) => done).length;
+        const todoCount = filteredTodoData.length - doneCount;
         return (
             <div className="todo-app">
                 <AppHeader todo={todoCount} done={doneCount} />
                 <div className="top-panel d-flex">
-                    <SearchPanel />
-                    <ItemStatusFilter />
+                    <SearchPanel onFilterInputChange={this.onFilterInputChange} />
+                    <ItemStatusFilter onTabSelected={this.onTabSelected} />
                 </div>
 
                 <TodoList
-                    todos={todoData}
+                    todos={filteredTodoData}
                     onDeleted={this.deleteItem}
                     onToggleDone={this.toggleDone}
                     onToggleImportant={this.toggleImportant}
