@@ -83,12 +83,11 @@ export default class App extends React.Component {
         this.setState({ selectedTab: tab });
     }
 
-    onFilterInputChange = (e) => {
-        this.setState({ filterText: e.target.value });
+    onFilterInputChange = (filterText) => {
+        this.setState({ filterText });
     }
 
-    filterByTab = (todoData) => {
-        const tab = this.state.selectedTab;
+    filterByTab = (todoData, tab) => {
         if (tab === 0) {    // All
             return todoData;
         }
@@ -99,23 +98,19 @@ export default class App extends React.Component {
         return todoData.filter((todo) => todo.done);
     }
 
-    filterByText = (todoData) => {
-        const text = this.state.filterText;
+    filterByText = (todoData, text) => {
         if (text.length < 3) {
             return todoData;
         }
         return todoData.filter((todo) => todo.label.includes(text));
     }
 
-    filterTodoData = () => {
-        const { todoData } = this.state;
-        let filteredTodoData = this.filterByTab([...todoData]);
-        filteredTodoData = this.filterByText(filteredTodoData);
-        return filteredTodoData;
-    }
-
     render() {
-        const filteredTodoData = this.filterTodoData();
+        const { todoData, filterText, selectedTab } = this.state;
+        
+        let filteredTodoData = this.filterByTab(todoData, selectedTab);
+        filteredTodoData = this.filterByText(filteredTodoData, filterText)
+
         const doneCount = filteredTodoData.filter(({ done }) => done).length;
         const todoCount = filteredTodoData.length - doneCount;
         return (
